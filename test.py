@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -21,3 +22,24 @@ text_data = ' '.join(text_data)
 corpus.append(text_data)
 
 print(text_data)
+=======
+
+import csv
+import pandas as pd
+
+def main():
+
+
+
+
+
+    data = pd.read_csv('transcript_data.csv')
+    data['transcript'] = data['transcript'].str.split()
+    data = data.explode('transcript').value_counts().reset_index(name='count')
+    print(data)
+
+main()
+
+
+
+>>>>>>> ec30bf6 (test)

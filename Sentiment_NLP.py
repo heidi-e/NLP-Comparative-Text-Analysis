@@ -149,3 +149,7 @@ class SentimentNLP:
 
     def third_viz(self):
         pass
+
+    def clean_data(self):
+        pass
+
