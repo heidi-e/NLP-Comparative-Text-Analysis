@@ -78,8 +78,7 @@ class SentimentNLP:
         self.data = defaultdict(dict)
 
 
-    @staticmethod
-    def _default_parser(filename):
+    def _default_parser(self, filename):
         """
         We'll use this method to do the parsing steps for txt files
         :param filename:
@@ -90,7 +89,7 @@ class SentimentNLP:
             content = f.read()
 
         # pre-process the content
-        content = SentimentNLP.preprocess(content)
+        content = self.preprocess(content)
 
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
         # We need wordcount,
