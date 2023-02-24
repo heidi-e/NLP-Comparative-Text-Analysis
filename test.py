@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 import re
 import nltk
 from nltk.corpus import stopwords
@@ -22,9 +21,9 @@ text_data = ' '.join(text_data)
 corpus.append(text_data)
 
 print(text_data)
-=======
 
-import csv
+
+"""import csv
 import pandas as pd
 
 def main():
@@ -43,3 +42,4 @@ main()
 
 
 >>>>>>> ec30bf6 (test)
+"""

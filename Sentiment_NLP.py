@@ -76,6 +76,7 @@ class SentimentNLP:
         # we register with the framework
         self.data = defaultdict(dict)
 
+
     @staticmethod
     def _default_parser(filename):
         """
@@ -83,6 +84,15 @@ class SentimentNLP:
         :param filename:
         :return:
         """
+        # read in txt file into string
+        with open(filename) as f:
+            content = f.read()
+
+        # pre-process the content
+        content = SentimentNLP.preprocess(content)
+
+        # this results dict will have the statistics and stuff for each file, no need to save the actual string
+        # We need wordcount, 
         results = {
             'wordcount': Counter("to be or not to be".split()),
             'numwords': random.randrange(10, 50)
@@ -96,6 +106,7 @@ class SentimentNLP:
         """
         for k, v in results.items():
             self.data[k][label] = v
+
 
     def load_text(self, filename, label=None, parser=None):
         """ Register a document with the framework """
@@ -132,17 +143,17 @@ class SentimentNLP:
         """
         pass
 
-    def preprocess(self, string):
-        corpus = []
-        text_data = ""
-        for i in range(0, 1732(Number of rows)):
-            text_data = re.sub('[^a-zA-Z]', ' ', Raw_Data['Column_With_Text'][i])
+    def preprocess(self, content):
+        # this takes out puncuation, lower cases everything, combined similar words, takes out stop words/ non-words.
+        text_data = content
+        text_data = re.sub('[^a-zA-Z]', ' ', text_data)
         text_data = text_data.lower()
         text_data = text_data.split()
         wl = WordNetLemmatizer()
         text_data = [wl.lemmatize(word) for word in text_data if not word in set(stopwords.words('english'))]
         text_data = ' '.join(text_data)
-        corpus.append(text_data)
+
+        return text_data
 
     def second_viz(self):
         pass
