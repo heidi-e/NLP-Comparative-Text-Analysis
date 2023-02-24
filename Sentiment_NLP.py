@@ -68,7 +68,7 @@ class Textastic:
 
 class SentimentNLP:
     """
-    class for analyzing text stuff
+    class for analyzing text using natural language processing
     """
 
     def __init__(self):
@@ -80,7 +80,7 @@ class SentimentNLP:
     @staticmethod
     def _default_parser(filename):
         """
-        We'll use this method to do the parsing steps
+        We'll use this method to do the parsing steps for txt files
         :param filename:
         :return:
         """
@@ -144,6 +144,11 @@ class SentimentNLP:
         pass
 
     def preprocess(self, content):
+        """
+
+        :param content: string, the contents of the file
+        :return:
+        """
         # this takes out puncuation, lower cases everything, combined similar words, takes out stop words/ non-words.
         text_data = content
         text_data = re.sub('[^a-zA-Z]', ' ', text_data)
