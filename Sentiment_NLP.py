@@ -6,6 +6,7 @@ import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
+import pprint as pp
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -120,6 +121,8 @@ class SentimentNLP:
         top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}
         return top_five_dict
 
+
+
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
         label: unique label for a text file that we parsed
@@ -146,6 +149,8 @@ class SentimentNLP:
         # into the internal state of the framework
 
         self._save_results(label, results)
+
+        #pp.pprint(self._save_results())
 
     def load_stop_words(self, stopfile):
         """
@@ -189,4 +194,7 @@ class SentimentNLP:
 
     def clean_data(self):
         pass
+
+
+
 
