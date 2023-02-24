@@ -92,12 +92,33 @@ class SentimentNLP:
         content = SentimentNLP.preprocess(content)
 
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
-        # We need wordcount, 
+        # We need wordcount,
+        top_five = SentimentNLP.count(content)
+
         results = {
-            'wordcount': Counter("to be or not to be".split()),
-            'numwords': random.randrange(10, 50)
+            'wordcount': top_five,
+            'otherstats': 20,
         }
         return results
+
+    def count(content):
+        """
+        takes in a parsed/cleaned string from txt file
+        return: dictionary with key as word and value as word counts
+        """
+        counts = dict()
+        words = content.split()
+
+        for word in words:
+            if word in counts:
+                counts[word] += 1
+            else:
+                counts[word] = 1
+
+
+        top_five_values = sorted(counts.values(), reverse=True)[:5]
+        top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}
+        return top_five_dict
 
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state

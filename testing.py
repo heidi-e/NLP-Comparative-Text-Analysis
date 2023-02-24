@@ -58,7 +58,12 @@ def count(text):
     return counts
 
 def main():
-    with open('49924_0.txt') as f:
+
+    text1 = '49924_0.txt'
+    text2 = '5_4.txt'
+    text3 = '7_1.text'
+
+    with open(text1) as f:
         content = f.read()
         content = preprocess(content)
 
@@ -67,8 +72,6 @@ def main():
     pp.pprint(counting_dict)
 
     top_five = sorted(counting_dict.values(), reverse=True)[:5]
-
-    print(top_five)
     top_five_dict = {k: v for k, v in counting_dict.items() if v in top_five}
     print(top_five_dict)
 
