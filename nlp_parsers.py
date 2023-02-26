@@ -14,11 +14,19 @@ def json_parser(filename):
     f.close()
     return {'wordcount': wc, 'numwords': num}
 
-def csv_parser(filename):
-    with open(filename, 'w', newline='') as csvfile:
-        reader = csv.reader(csvfile, delimiter=',')
+def csv_parser(filename, col_name):
+    content_lst = []  # an empty list to store the second column
+    cnt
+    with open(filename, 'r') as rf:
+        reader = csv.reader(rf, delimiter=',')
         for row in reader:
-            for words in row:
-                wc = Counter(words)
-                num = len(words)
+            content_lst.append(row[1])
+
+        for word in content_lst:
+            Counter([word]) += 1
+
     return {'wordcount': wc, 'numwords': num}
+
+
+
+print(csv_parser('transcript_data.csv'))
