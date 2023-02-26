@@ -9,6 +9,8 @@ from nltk.stem import WordNetLemmatizer
 import pprint as pp
 from sankey_test import make_sankey
 from nltk.sentiment import SentimentIntensityAnalyzer
+import matplotlib.pyplot as plt
+from wordcloud import WordCloud
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -94,14 +96,17 @@ class SentimentNLP:
         content = self.preprocess(content)
 
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
-        # We need wordcount,
+
+        # computes word count frequency for each text file
         wordcounts = SentimentNLP.count(content)
 
+        # initializes nltk library
         sia = SentimentIntensityAnalyzer()
 
         results = {
             'wordcount': wordcounts,
             'sentiment': sia.polarity_scores(content),
+            'raw_text': content,
         }
         return results
 
@@ -227,7 +232,17 @@ class SentimentNLP:
         make_sankey(df_sankey, df_sankey.columns, 0)
 
     def second_viz(self):
+        pass
 
 
     def third_viz(self):
-        pass
+
+        text_content = self.data['raw_text']
+        for key, value in text_content.items():
+            # Create and generate a word cloud image:
+            wordcloud = WordCloud().generate(value)
+
+            # Display the generated image:
+            plt.imshow(wordcloud, interpolation='bilinear')
+            plt.axis("off")
+            plt.show()
