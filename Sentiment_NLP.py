@@ -240,9 +240,11 @@ class SentimentNLP:
         text_content = self.data['raw_text']
         for key, value in text_content.items():
             # Create and generate a word cloud image:
-            wordcloud = WordCloud().generate(value)
+            wordcloud = WordCloud(background_color="white").generate(value)
 
             # Display the generated image:
+            plt.figure(figsize=[20, 10])
             plt.imshow(wordcloud, interpolation='bilinear')
+            plt.title(key, fontsize = 40)
             plt.axis("off")
             plt.show()
