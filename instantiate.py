@@ -9,11 +9,9 @@ object.load_text('7_1.txt')
 object.load_text('8_2.txt')
 object.load_text('9_4.txt')
 
-dic = object.data
+print(object.data)
 
-for each in dic:
-    for row in each:
-        print(row)
+object.wordcount_sankey()
 
 
 

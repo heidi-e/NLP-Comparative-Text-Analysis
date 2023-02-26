@@ -7,7 +7,7 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import pprint as pp
-from sankey import make_sankey
+from sankey_test import make_sankey
 
 
 nltk.download('stopwords')
@@ -198,7 +198,7 @@ class SentimentNLP:
                     df_sankey = df_sankey.append(new_row, ignore_index=True)
 
 
-        make_sankey(df_sankey, "text", "word")
+        make_sankey(df_sankey, df_sankey.columns, 0)
 
 
 
