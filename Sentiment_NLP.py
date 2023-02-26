@@ -7,6 +7,8 @@ import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import pprint as pp
+from sankey import make_sankey
+
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -179,14 +181,30 @@ class SentimentNLP:
         """
         pass
 
-    def wordcount_sankey(self, word_list: List = None, k: int = 5):
+    def wordcount_sankey(self):
         """
 
         :param word_list:
         :param k:
         :return:
         """
-        pass
+        df_sankey = pd.DataFrame(columns=['text', 'word'])
+        wordcount_dict = self.data["wordcount"]
+
+        for filename in wordcount_dict:
+            for key, value in wordcount_dict[filename].items():
+                for i in range(value):
+                    new_row = {'text': filename, 'word': key}
+                    df_sankey = df_sankey.append(new_row, ignore_index=True)
+
+
+        make_sankey(df_sankey, "text", "word")
+
+
+
+
+
+
 
 
 
