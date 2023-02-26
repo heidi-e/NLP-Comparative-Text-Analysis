@@ -12,6 +12,7 @@ from nltk.sentiment import SentimentIntensityAnalyzer
 
 nltk.download('stopwords')
 nltk.download('wordnet')
+nltk.download('vader_lexicon')
 
 # change
 """
@@ -96,9 +97,11 @@ class SentimentNLP:
         # We need wordcount,
         wordcounts = SentimentNLP.count(content)
 
+        sia = SentimentIntensityAnalyzer()
+
         results = {
             'wordcount': wordcounts,
-            'sentiment': 20,
+            'sentiment': sia.polarity_scores(content),
         }
         return results
 
@@ -135,10 +138,8 @@ class SentimentNLP:
             else:
                 counts[word] = 1
 
-        """top_five_values = sorted(counts.values(), reverse=True)[:5]
-        top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}"""
-
         return counts
+
 
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
@@ -178,9 +179,9 @@ class SentimentNLP:
 
     def get_wordcount(self, word_list = None, k = 5):
         """
-
-        :param word_list:
-        :param k:
+        updates wordcount dictionary based on user defined parameters
+        :param word_list (lst): a list of words as string
+        :param k (int): the k most common words across the files
         :return:
         """
         if word_list == None:
@@ -202,17 +203,14 @@ class SentimentNLP:
 
                 wordcount_dict[filename] = temp_dict
 
-
         self.data["wordcount"] = wordcount_dict
-
 
 
     def wordcount_sankey(self, word_list=None, k=5):
         """
-
-        :param word_list:
-        :param k:
-        :return:
+        create sankey visualization with user parameters
+        :param word_list (lst): a list of words as string
+        :param k (int): the k most common words across the files
         """
 
         self.get_wordcount(word_list, k)
@@ -228,12 +226,9 @@ class SentimentNLP:
 
         make_sankey(df_sankey, df_sankey.columns, 0)
 
-
     def second_viz(self):
         pass
 
-    def third_viz(self):
-        pass
 
-    def clean_data(self):
+    def third_viz(self):
         pass
