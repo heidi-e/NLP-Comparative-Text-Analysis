@@ -9,7 +9,7 @@ object.load_text('7_1.txt')
 object.load_text('8_2.txt')
 object.load_text('9_4.txt')
 
-pp.pprint(object.data)
+#pp.pprint(object.data)
 
 #object.wordcount_sankey(word_list=["br", "darling", "ronald", "stage", "film", "actor"])
 

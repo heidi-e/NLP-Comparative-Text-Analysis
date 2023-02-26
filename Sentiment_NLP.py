@@ -10,7 +10,6 @@ import pprint as pp
 from sankey_test import make_sankey
 from nltk.sentiment import SentimentIntensityAnalyzer
 import matplotlib.pyplot as plt
-import numpy as np
 from wordcloud import WordCloud
 
 nltk.download('stopwords')
@@ -233,16 +232,7 @@ class SentimentNLP:
         make_sankey(df_sankey, df_sankey.columns, 0)
 
     def second_viz(self):
-
-
-        # Set the number of subplots you want to create
-        cols = 2
-        rows = len(self.data["sentiment"].keys())
-
-        print(rows)
-
-        fig, axs = plt.subplots(rows, cols, figsize=(8, 8))
-
+        pass
 
 
     def third_viz(self):
