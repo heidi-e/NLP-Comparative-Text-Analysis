@@ -177,9 +177,9 @@ class SentimentNLP:
 
     def get_wordcount(self, word_list = None, k = 5):
         """
-
-        :param word_list:
-        :param k:
+        updates wordcount dictionary based on user defined parameters
+        :param word_list (lst): a list of words as string
+        :param k (int): the k most common words across the files
         :return:
         """
         if word_list == None:
@@ -201,17 +201,14 @@ class SentimentNLP:
 
                 wordcount_dict[filename] = temp_dict
 
-
         self.data["wordcount"] = wordcount_dict
-
 
 
     def wordcount_sankey(self, word_list=None, k=5):
         """
-
-        :param word_list:
-        :param k:
-        :return:
+        create sankey visualization with user parameters
+        :param word_list (lst): a list of words as string
+        :param k (int): the k most common words across the files
         """
 
         self.get_wordcount(word_list, k)
