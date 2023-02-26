@@ -4,16 +4,24 @@ def third_viz(self):
     """
 
     text_content = self.data['raw_text']
-
+    text_list = []
     # combine all the contents of the text files together
-    value = ','.join(text_content.values())
+    #value = ','.join(text_content.values())
+    for key, value in text_content.items():
+        text_list.append(value)
 
-    # Create and generate a word cloud image
-    wordcloud = WordCloud(background_color="white").generate(value)
+    # Create the figure and subplots
+    fig, axs = plt.subplots(1, len(text_list), figsize=(15, 5))
 
-    # Display the generated image
-    plt.figure(figsize=[20, 10])
-    plt.imshow(wordcloud, interpolation='bilinear')
-    plt.title('all text files', fontsize=40)
-    plt.axis("off")
+    # Create a word cloud for each subplot
+    for i in range(len(text_list)):
+        ax = axs[i]
+        wc = WordCloud(background_color="white").generate(text_list[i])
+        ax.imshow(wc, interpolation='bilinear')
+        ax.set_axis_off()
+
+    # Adjust the layout
+    plt.tight_layout()
     plt.show()
+
+
