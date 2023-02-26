@@ -8,6 +8,7 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import pprint as pp
 from sankey_test import make_sankey
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 nltk.download('stopwords')
 nltk.download('wordnet')
@@ -97,7 +98,7 @@ class SentimentNLP:
 
         results = {
             'wordcount': wordcounts,
-            'wordlength': 20,
+            'sentiment': 20,
         }
         return results
 
@@ -226,6 +227,8 @@ class SentimentNLP:
                     df_sankey = df_sankey.append(new_row, ignore_index=True)
 
         make_sankey(df_sankey, df_sankey.columns, 0)
+
+    def
 
     def second_viz(self):
         pass
