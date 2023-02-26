@@ -81,8 +81,8 @@ class SentimentNLP:
     def _default_parser(self, filename):
         """
         We'll use this method to do the parsing steps for txt files
-        :param filename:
-        :return:
+        :param filename (str): name of file
+        :return: a dict of top five most freq used words in that file
         """
         # read in txt file into string
         with open(filename) as f:
@@ -91,20 +91,40 @@ class SentimentNLP:
         # pre-process the content
         content = self.preprocess(content)
 
+
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
         # We need wordcount,
         top_five = SentimentNLP.count(content)
 
         results = {
             'wordcount': top_five,
-            'otherstats': 20,
+            'wordlength': 20,
         }
         return results
 
+    def preprocess(self, content):
+        """
+
+        :param content (str): the contents of the file
+        :return: text_data (str): cleaned version of content
+        """
+        # this takes out punctuation, lower cases everything, combined similar words, takes out stop words/ non-words.
+        text_data = content
+        text_data = re.sub('[^a-zA-Z]', ' ', text_data)
+        text_data = text_data.lower()
+        text_data = text_data.split()
+        wl = WordNetLemmatizer()
+        text_data = [wl.lemmatize(word) for word in text_data if not word in set(stopwords.words('english'))]
+        text_data = ' '.join(text_data)
+
+        return text_data
+
     def count(content):
         """
+        counts the number of words and appends into a dictionary
         takes in a parsed/cleaned string from txt file
-        return: dictionary with key as word and value as word counts
+        content (str): the contents of the file
+        return: top_five_dict (dict): top five word count dictionary with key as word and value as word counts
         """
         counts = dict()
         words = content.split()
@@ -115,16 +135,15 @@ class SentimentNLP:
             else:
                 counts[word] = 1
 
-
+        # obtain top five most freq used words
         top_five_values = sorted(counts.values(), reverse=True)[:5]
         top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}
+
         return top_five_dict
-
-
 
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
-        label: unique label for a text file that we parsed
+        label (str): unique label for a text file that we parsed
         results: the data extracted from the file as a dictionary attribute-->raw data
         """
         for k, v in results.items():
@@ -168,22 +187,7 @@ class SentimentNLP:
         """
         pass
 
-    def preprocess(self, content):
-        """
 
-        :param content: string, the contents of the file
-        :return:
-        """
-        # this takes out puncuation, lower cases everything, combined similar words, takes out stop words/ non-words.
-        text_data = content
-        text_data = re.sub('[^a-zA-Z]', ' ', text_data)
-        text_data = text_data.lower()
-        text_data = text_data.split()
-        wl = WordNetLemmatizer()
-        text_data = [wl.lemmatize(word) for word in text_data if not word in set(stopwords.words('english'))]
-        text_data = ' '.join(text_data)
-
-        return text_data
 
     def second_viz(self):
         pass
