@@ -91,7 +91,6 @@ class SentimentNLP:
         # pre-process the content
         content = self.preprocess(content)
 
-
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
         # We need wordcount,
         top_five = SentimentNLP.count(content)
@@ -136,10 +135,12 @@ class SentimentNLP:
                 counts[word] = 1
 
         # obtain top five most freq used words
-        top_five_values = sorted(counts.values(), reverse=True)[:5]
-        top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}
+        res = dict(sorted(counts.items(), key = lambda x: x[1], reverse = True)[:5])
 
-        return top_five_dict
+        """top_five_values = sorted(counts.values(), reverse=True)[:5]
+        top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}"""
+
+        return res
 
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
