@@ -93,10 +93,10 @@ class SentimentNLP:
 
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
         # We need wordcount,
-        top_five = SentimentNLP.count(content)
+        wordcount = SentimentNLP.count(content)
 
         results = {
-            'wordcount': top_five,
+            'wordcount': wordcount,
             'wordlength': 20,
         }
         return results
@@ -190,6 +190,7 @@ class SentimentNLP:
 
         for filename in wordcount_dict:
             for key, value in wordcount_dict[filename].items():
+
                 for i in range(value):
                     new_row = {'text': filename, 'word': key}
                     df_sankey = df_sankey.append(new_row, ignore_index=True)
