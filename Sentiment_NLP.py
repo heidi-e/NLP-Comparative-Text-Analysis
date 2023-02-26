@@ -145,6 +145,7 @@ class SentimentNLP:
 
         return counts
 
+
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
         label (str): unique label for a text file that we parsed
@@ -181,7 +182,7 @@ class SentimentNLP:
         """
         pass
 
-    def get_wordcount(self, word_list=None, k=5):
+    def get_wordcount(self, word_list = None, k = 5):
         """
         updates wordcount dictionary based on user defined parameters
         :param word_list (lst): a list of words as string
@@ -192,6 +193,7 @@ class SentimentNLP:
             wordcount_dict = self.data["wordcount"]
 
             for filename in wordcount_dict:
+
                 temp_dict = dict(sorted(wordcount_dict[filename].items(), key=lambda x: x[1], reverse=True)[:k])
                 wordcount_dict[filename] = temp_dict
 
@@ -207,6 +209,7 @@ class SentimentNLP:
                 wordcount_dict[filename] = temp_dict
 
         self.data["wordcount"] = wordcount_dict
+
 
     def wordcount_sankey(self, word_list=None, k=5):
         """
@@ -229,31 +232,23 @@ class SentimentNLP:
         make_sankey(df_sankey, df_sankey.columns, 0)
 
     def second_viz(self):
-        """ fix this
-
-        # Set the number of subplots you want to create
-        cols = 2
-        rows = len(self.data["sentiment"].keys())
-
-        print(rows)
-
-        fig, axs = plt.subplots(rows, cols, figsize=(8, 8))
-
-        index = 0
-        for key, value in self.data.items():
-            row = index // cols
-            col = index % cols
-            ax = axs[row, col]
-            ax.bar(range(len(value)), value)
-            ax.set_title(key)
-            index += 1"""
+        pass
 
 
     def third_viz(self):
-        filenames = self.data["sentiment"].keys()
-        compounds = []
-        for filename in self.data["sentiment"]:
-            compounds.append(self.data["sentiment"][filename]["compound"])
 
-        plt.bar(filenames, compounds)
+        text_content = self.data['raw_text']
+
+        # combine all the contents of the text files together
+        value = ','.join(text_content.values())
+
+        # Create and generate a word cloud image
+        wordcloud = WordCloud(background_color="white").generate(value)
+
+        # Display the generated image
+        plt.figure(figsize=[20, 10])
+        plt.imshow(wordcloud, interpolation='bilinear')
+        plt.title('all text files', fontsize = 40)
+        plt.axis("off")
         plt.show()
+
