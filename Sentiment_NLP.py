@@ -228,7 +228,6 @@ class SentimentNLP:
 
         make_sankey(df_sankey, df_sankey.columns, 0)
 
-    def
 
     def second_viz(self):
         pass
