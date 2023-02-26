@@ -11,7 +11,7 @@ object.load_text('9_4.txt')
 
 pp.pprint(object.data)
 
-object.wordcount_sankey(word_list=["br", "darling", "ronald", "stage", "film", "actor"])
+#object.wordcount_sankey(word_list=["br", "darling", "ronald", "stage", "film", "actor"])
 
 
 
