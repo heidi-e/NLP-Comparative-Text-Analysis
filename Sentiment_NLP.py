@@ -9,7 +9,6 @@ from nltk.stem import WordNetLemmatizer
 import pprint as pp
 from sankey_test import make_sankey
 
-
 nltk.download('stopwords')
 nltk.download('wordnet')
 
@@ -35,7 +34,7 @@ class Textastic:
          Integrate parsing results into internal state
         label: unique label for a text file that we parsed
         results: the data extracted from the file as a dictionary attribute-->raw data
-        
+
         for k, v in results.items():
             self.data[k][label] = v
 
@@ -79,7 +78,6 @@ class SentimentNLP:
         # we register with the framework
         self.data = defaultdict(dict)
 
-
     def _default_parser(self, filename):
         """
         We'll use this method to do the parsing steps for txt files
@@ -95,10 +93,10 @@ class SentimentNLP:
 
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
         # We need wordcount,
-        top_five = SentimentNLP.count(content)
+        wordcounts = SentimentNLP.count(content)
 
         results = {
-            'wordcount': top_five,
+            'wordcount': wordcounts,
             'wordlength': 20,
         }
         return results
@@ -136,13 +134,10 @@ class SentimentNLP:
             else:
                 counts[word] = 1
 
-        # obtain top five most freq used words
-        res = dict(sorted(counts.items(), key = lambda x: x[1], reverse = True)[:5])
-
         """top_five_values = sorted(counts.values(), reverse=True)[:5]
         top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}"""
 
-        return res
+        return counts
 
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
@@ -151,7 +146,6 @@ class SentimentNLP:
         """
         for k, v in results.items():
             self.data[k][label] = v
-
 
     def load_text(self, filename, label=None, parser=None):
         """ Register a document with the framework """
@@ -171,7 +165,7 @@ class SentimentNLP:
 
         self._save_results(label, results)
 
-        #pp.pprint(self._save_results())
+        # pp.pprint(self._save_results())
 
     def load_stop_words(self, stopfile):
         """
@@ -181,13 +175,47 @@ class SentimentNLP:
         """
         pass
 
-    def wordcount_sankey(self):
+    def get_wordcount(self, word_list = None, k = 5):
         """
 
         :param word_list:
         :param k:
         :return:
         """
+        if word_list == None:
+            wordcount_dict = self.data["wordcount"]
+
+            for filename in wordcount_dict:
+
+                temp_dict = dict(sorted(wordcount_dict[filename].items(), key=lambda x: x[1], reverse=True)[:k])
+                wordcount_dict[filename] = temp_dict
+
+        else:
+            wordcount_dict = self.data["wordcount"]
+
+            for filename in wordcount_dict:
+                temp_dict = defaultdict(dict)
+                for key, value in wordcount_dict[filename].items():
+                    if key in word_list:
+                        temp_dict[key] = value
+
+                wordcount_dict[filename] = temp_dict
+
+
+        self.data["wordcount"] = wordcount_dict
+
+
+
+    def wordcount_sankey(self, word_list=None, k=5):
+        """
+
+        :param word_list:
+        :param k:
+        :return:
+        """
+
+        self.get_wordcount(word_list, k)
+
         df_sankey = pd.DataFrame(columns=['text', 'word'])
         wordcount_dict = self.data["wordcount"]
 
@@ -197,16 +225,7 @@ class SentimentNLP:
                     new_row = {'text': filename, 'word': key}
                     df_sankey = df_sankey.append(new_row, ignore_index=True)
 
-
         make_sankey(df_sankey, df_sankey.columns, 0)
-
-
-
-
-
-
-
-
 
     def second_viz(self):
         pass
@@ -216,7 +235,3 @@ class SentimentNLP:
 
     def clean_data(self):
         pass
-
-
-
-
