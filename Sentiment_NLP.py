@@ -8,9 +8,11 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 import pprint as pp
 from sankey_test import make_sankey
+from nltk.sentiment import SentimentIntensityAnalyzer
 
 nltk.download('stopwords')
 nltk.download('wordnet')
+nltk.download('vader_lexicon')
 
 # change
 """
@@ -95,9 +97,11 @@ class SentimentNLP:
         # We need wordcount,
         wordcounts = SentimentNLP.count(content)
 
+        sia = SentimentIntensityAnalyzer()
+
         results = {
             'wordcount': wordcounts,
-            'wordlength': 20,
+            'sentiment': sia.polarity_scores(content),
         }
         return results
 
@@ -134,10 +138,8 @@ class SentimentNLP:
             else:
                 counts[word] = 1
 
-        """top_five_values = sorted(counts.values(), reverse=True)[:5]
-        top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}"""
-
         return counts
+
 
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
@@ -225,10 +227,7 @@ class SentimentNLP:
         make_sankey(df_sankey, df_sankey.columns, 0)
 
     def second_viz(self):
-        pass
+
 
     def third_viz(self):
-        pass
-
-    def clean_data(self):
         pass
