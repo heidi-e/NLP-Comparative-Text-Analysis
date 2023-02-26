@@ -1,4 +1,5 @@
 from Sentiment_NLP import SentimentNLP
+import pprint as pp
 
 
 object = SentimentNLP()
@@ -9,7 +10,7 @@ object.load_text('7_1.txt')
 object.load_text('8_2.txt')
 object.load_text('9_4.txt')
 
-print(object.data)
+pp.pprint(object.data)
 
 
 

@@ -117,6 +117,7 @@ class SentimentNLP:
 
 
         top_five_values = sorted(counts.values(), reverse=True)[:5]
+        print(top_five_values)
         top_five_dict = {k: v for k, v in counts.items() if v in top_five_values}
         return top_five_dict
 
