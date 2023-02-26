@@ -1,12 +1,9 @@
 import pandas as pd
-from typing import List
 from collections import Counter, defaultdict
-import random
 import re
 import nltk
 from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
-import pprint as pp
 from sankey_test import make_sankey
 from nltk.sentiment import SentimentIntensityAnalyzer
 import matplotlib.pyplot as plt
@@ -236,6 +233,9 @@ class SentimentNLP:
 
 
     def third_viz(self):
+        """
+        creates word cloud visualization based on text content from all the files
+        """
 
         text_content = self.data['raw_text']
 
