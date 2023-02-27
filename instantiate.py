@@ -1,5 +1,5 @@
 from Sentiment_NLP import SentimentNLP
-from testing import SentimentNLP
+#from testing import SentimentNLP
 import pprint as pp
 
 object = SentimentNLP()
@@ -16,11 +16,10 @@ object.load_text('9_4.txt')
 
 #object.wordcount_sankey()
 
-#object.second_viz()
+object.fourth_viz()
 
 #object.visualize(wordcount_sankey)
 
-print(type('5_4.txt'))
 
 
 

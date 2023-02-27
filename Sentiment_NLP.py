@@ -2,6 +2,7 @@
 Core framework class for NLP Comparative Analysis
 """
 import pandas as pd
+import numpy as np
 from typing import List
 from collections import Counter, defaultdict
 import random
@@ -98,13 +99,13 @@ class SentimentNLP:
         # pre-process the content
         content = self.preprocess(content)
 
-        # this results dict will have the statistics and stuff for each file, no need to save the actual string
         # computes word count frequency for each text file
         wordcounts = SentimentNLP.count(content)
 
         # initializes nltk library
         sia = SentimentIntensityAnalyzer()
 
+        # construct results dict to organize statistics for each file
         results = {
             'wordcount': wordcounts,
             'sentiment': sia.polarity_scores(content),
@@ -174,10 +175,7 @@ class SentimentNLP:
 
         # Save / integrate the data we extracted from the file
         # into the internal state of the framework
-
         self._save_results(label, results)
-
-        # pp.pprint(self._save_results())
 
     def get_wordcount(self, word_list = None, k = 5):
         """
@@ -264,7 +262,7 @@ class SentimentNLP:
 
     def third_viz(self):
         """
-        Create bar graph that overlays compound (sentiment) data from each of the text files
+        Create bar graph that overlays compound (sentiment) score for each text file
         """
 
         filenames = self.data["sentiment"].keys()
@@ -279,3 +277,39 @@ class SentimentNLP:
         plt.ylabel('Compound score for each file')
         plt.show()
 
+    def fourth_viz(self):
+        """
+        Create a multiple bar plot that compares positive vs negative sentiment scores for each file
+        """
+
+        filenames = self.data["sentiment"].keys()
+        pos_lst = []
+        neg_lst = []
+
+        # obtain pos and neg values for each file
+        for filename in self.data["sentiment"]:
+            pos_lst.append(self.data["sentiment"][filename]["pos"])
+            neg_lst.append(self.data["sentiment"][filename]["neg"])
+
+        # set width of bar
+        barWidth = 0.25
+        fig = plt.subplots(figsize=(12, 8))
+
+        # Set position of bar on X axis
+        br1 = np.arange(len(pos_lst))
+        br2 = [x + barWidth for x in br1]
+
+        # Make the plot
+        plt.bar(br1, pos_lst, color='r', width=barWidth,
+                edgecolor='grey', label='positive')
+        plt.bar(br2, neg_lst, color='b', width=barWidth,
+                edgecolor='grey', label='negative')
+
+        # Add Xticks
+        plt.xlabel('Text file', fontweight='bold', fontsize=15)
+        plt.ylabel('Sentiment Score', fontweight='bold', fontsize=15)
+        plt.xticks([r + barWidth for r in range(len(pos_lst))],
+                   filenames)
+        plt.title('Bar graph of sentiment scores for each file')
+        plt.legend()
+        plt.show()

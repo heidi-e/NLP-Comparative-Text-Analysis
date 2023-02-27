@@ -26,7 +26,3 @@ def csv_parser(filename, col_name):
             Counter([word]) += 1
 
     return {'wordcount': wc, 'numwords': num}
-
-
-
-print(csv_parser('transcript_data.csv'))

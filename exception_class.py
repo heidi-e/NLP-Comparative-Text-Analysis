@@ -1,4 +1,6 @@
 from Sentiment_NLP import SentimentNLP
+from collections import defaultdict
+from sankey_test import make_sankey
 
 class NLPError(Exception):
     """ A user-defined exception for signalling a
@@ -10,6 +12,8 @@ class NLPError(Exception):
 
     def _default_parser(self, filename):
         """ Creates generic parser for simple text files
+        :param filename (str): name of file
+        :return results (dict): a dict of statistics for each text file, the state variable
         """
 
         try:
