@@ -1,3 +1,6 @@
+"""
+Core framework class for NLP Comparative Analysis
+"""
 import pandas as pd
 from typing import List
 from collections import Counter, defaultdict
@@ -233,9 +236,11 @@ class SentimentNLP:
         """
         Create single visualization of a word cloud with subplots for each text file
         """
+
         text_content = self.data['raw_text']
         filename_lst = []
         text_lst = []
+
         # create list of text content
         for key, value in text_content.items():
             text_lst.append(value)
