@@ -84,9 +84,9 @@ class SentimentNLP:
 
     def _default_parser(self, filename):
         """
-        We'll use this method to do the parsing steps for txt files
+        Create a generic parser for simple text files
         :param filename (str): name of file
-        :return: a dict of top five most freq used words in that file
+        :return results (dict): a dict of statistics for each text file, the state variable
         """
         # read in txt file into string
         with open(filename) as f:
@@ -96,7 +96,6 @@ class SentimentNLP:
         content = self.preprocess(content)
 
         # this results dict will have the statistics and stuff for each file, no need to save the actual string
-
         # computes word count frequency for each text file
         wordcounts = SentimentNLP.count(content)
 
@@ -112,8 +111,8 @@ class SentimentNLP:
 
     def preprocess(self, content):
         """
-
-        :param content (str): the contents of the file
+        cleans text file through pre-processing step
+        :param content (str): the content of the file
         :return: text_data (str): cleaned version of content
         """
         # this takes out punctuation, lower cases everything, combined similar words, takes out stop words/ non-words.
@@ -130,9 +129,9 @@ class SentimentNLP:
     def count(content):
         """
         counts the number of words and appends into a dictionary
-        takes in a parsed/cleaned string from txt file
+        (takes in a parsed/cleaned string from txt file)
         content (str): the contents of the file
-        return: top_five_dict (dict): top five word count dictionary with key as word and value as word counts
+        return: counts (dict): word count freq dictionary
         """
         counts = dict()
         words = content.split()
@@ -145,7 +144,6 @@ class SentimentNLP:
 
         return counts
 
-
     def _save_results(self, label, results):
         """ Integrate parsing results into internal state
         label (str): unique label for a text file that we parsed
@@ -155,7 +153,11 @@ class SentimentNLP:
             self.data[k][label] = v
 
     def load_text(self, filename, label=None, parser=None):
-        """ Register a document with the framework """
+        """ Register a document with the framework, handles domain-specific parsers
+        filename (str): name of the file
+        label (str): unique label for a text file that we parsed
+        parser (function): custom domain-specific parser to handle text file
+         """
 
         if parser is None:  # do default parsing of standard .txt file
             results = self._default_parser(filename)
@@ -174,34 +176,28 @@ class SentimentNLP:
 
         # pp.pprint(self._save_results())
 
-    def load_stop_words(self, stopfile):
-        """
-
-        :param stopfile:
-        :return:
-        """
-        pass
-
     def get_wordcount(self, word_list = None, k = 5):
         """
-        updates wordcount dictionary based on user defined parameters
+        filters word count dictionary based on user defined parameters
         :param word_list (lst): a list of words as string
         :param k (int): the k most common words across the files
-        :return:
         """
+
+        # for default parameters
         if word_list == None:
             wordcount_dict = self.data["wordcount"]
 
             for filename in wordcount_dict:
-
+                # extract k most common words
                 temp_dict = dict(sorted(wordcount_dict[filename].items(), key=lambda x: x[1], reverse=True)[:k])
                 wordcount_dict[filename] = temp_dict
-
+        # for user defined parameters
         else:
             wordcount_dict = self.data["wordcount"]
 
             for filename in wordcount_dict:
                 temp_dict = defaultdict(dict)
+                # extract user defined set of words
                 for key, value in wordcount_dict[filename].items():
                     if key in word_list:
                         temp_dict[key] = value
@@ -217,36 +213,43 @@ class SentimentNLP:
         :param word_list (lst): a list of words as string
         :param k (int): the k most common words across the files
         """
-
+        # filter state variable with parameters
         self.get_wordcount(word_list, k)
 
         df_sankey = pd.DataFrame(columns=['text', 'word'])
         wordcount_dict = self.data["wordcount"]
 
+        # iterate through dict to make dataframe
         for filename in wordcount_dict:
             for key, value in wordcount_dict[filename].items():
                 for i in range(value):
                     new_row = {'text': filename, 'word': key}
                     df_sankey = df_sankey.append(new_row, ignore_index=True)
 
+        # call sankey library
         make_sankey(df_sankey, df_sankey.columns, 0)
 
     def second_viz(self):
+        """
+        Create single visualization of a word cloud with subplots for each text file
+        """
         text_content = self.data['raw_text']
-        text_list = []
-        # combine all the contents of the text files together
-        # value = ','.join(text_content.values())
+        filename_lst = []
+        text_lst = []
+        # create list of text content
         for key, value in text_content.items():
-            text_list.append(value)
+            text_lst.append(value)
+            filename_lst.append(key)
 
         # Create the figure and subplots
-        fig, axs = plt.subplots(1, len(text_list), figsize=(15, 5))
+        fig, axs = plt.subplots(1, len(text_lst), figsize=(15, 5))
 
         # Create a word cloud for each subplot
-        for i in range(len(text_list)):
+        for i in range(len(text_lst)):
             ax = axs[i]
-            wc = WordCloud(background_color="white").generate(text_list[i])
+            wc = WordCloud(background_color="white").generate(text_lst[i])
             ax.imshow(wc, interpolation='bilinear')
+            ax.set_title(filename_lst[i])
             ax.set_axis_off()
 
         # Adjust the layout
@@ -255,12 +258,19 @@ class SentimentNLP:
 
 
     def third_viz(self):
+        """
+        Create bar graph that overlays compound (sentiment) data from each of the text files
+        """
 
         filenames = self.data["sentiment"].keys()
         compounds = []
         for filename in self.data["sentiment"]:
             compounds.append(self.data["sentiment"][filename]["compound"])
 
+        # make bar graph
         plt.bar(filenames, compounds)
+        plt.title('Bar graph of sentiment compound score for each file')
+        plt.xlabel('Text file name')
+        plt.ylabel('Compound score for each file')
         plt.show()
 

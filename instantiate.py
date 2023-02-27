@@ -13,7 +13,9 @@ pp.pprint(object.data)
 
 #object.wordcount_sankey(word_list=["br", "darling", "ronald", "stage", "film", "actor"])
 
-object.second_viz()
+object.wordcount_sankey()
+
+#object.second_viz()
 
 
 
