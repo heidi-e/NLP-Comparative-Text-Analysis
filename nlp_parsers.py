@@ -14,15 +14,15 @@ def json_parser(filename):
     f.close()
     return {'wordcount': wc, 'numwords': num}
 
-def csv_parser(filename, col_name):
-    content_lst = []  # an empty list to store the second column
-    cnt
+def csv_parser(filename, col_pos):
+    content_lst = []  # an empty list to store the data
+    cnt = Counter()
     with open(filename, 'r') as rf:
         reader = csv.reader(rf, delimiter=',')
         for row in reader:
-            content_lst.append(row[1])
+            content_lst.append(row[col_pos])
 
         for word in content_lst:
-            Counter([word]) += 1
+            cnt[word] += 1
 
-    return {'wordcount': wc, 'numwords': num}
+    return cnt
