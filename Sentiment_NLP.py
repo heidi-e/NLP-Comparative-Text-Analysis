@@ -12,6 +12,8 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sankey_test import make_sankey
 from nltk.sentiment import SentimentIntensityAnalyzer
+
+from exception_class import NLPError
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
 
@@ -28,6 +30,7 @@ class SentimentNLP:
         # manage data about the different texts that
         # we register with the framework
         self.data = defaultdict(dict)
+        self.Exception = NLPError
 
     def _default_parser(self, filename):
         """
@@ -35,6 +38,10 @@ class SentimentNLP:
         :param filename (str): name of file
         :return results (dict): a dict of statistics for each text file, the state variable
         """
+
+        self.Exception._default_parser(filename)
+
+
         # read in txt file into string
         with open(filename) as f:
             content = f.read()
@@ -106,6 +113,8 @@ class SentimentNLP:
         parser (function): custom domain-specific parser to handle text file
          """
 
+        self.Exception.load_text(filename, label, parser)
+
         if parser is None:  # do default parsing of standard .txt file
             results = self._default_parser(filename)
 
@@ -126,6 +135,8 @@ class SentimentNLP:
         :param word_list (lst): a list of words as string
         :param k (int): the k most common words across the files
         """
+
+        self.Exception.get_wordcount(word_list, k)
 
         # for default parameters
         if word_list == None:

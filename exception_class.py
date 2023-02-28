@@ -1,13 +1,13 @@
-from Sentiment_NLP import SentimentNLP
+
 from collections import defaultdict
+import os
 from sankey_test import make_sankey
 
-class NLPError(Exception):
+class NLPError:
     """ A user-defined exception for signalling a
         grading application-specific issue """
 
     def __init__(self):
-        super().__init__("Can't build Data dict")
         self.data = defaultdict(dict)
 
     def _default_parser(self, filename):
@@ -20,6 +20,8 @@ class NLPError(Exception):
 
             assert type(filename) == str, 'Expecting a file name'
             assert filename.endswith('.txt'), 'Not a txt file'
+            assert os.path.isfile(filename), 'File does not exist'
+            assert os.stat(filename).st_size != 0, 'Inputted file is empty'
 
         except AssertionError as ae:
             print("Parser error: ", str(ae))
@@ -35,37 +37,20 @@ class NLPError(Exception):
         finally:
             print('CLOSING CONNECTION')
 
-    def preprocess(self, content):
 
-        try:
-            assert type(content) == str, 'Expecting string'
-
-    def _save_results(self, label, results):
-
-        try:
-            assert type(label) == str, 'Label not a string'
-            assert type(results) == dict, 'Data not a dictionary'
-
-        except AssertionError as ae:
-            print("Parser error: ", str(ae))
-            return None
-
-        else:
-            print('Success')
-
-        finally:
-            print('CLOSING CONNECTION')
-
-    def load_text(selfself, filename, label=None, parser=None):
+    def load_text(self, filename, label=None, parser=None):
 
         try:
             assert type(filename) == str, 'Filename not a string'
-            assert filename.lower().endswith('.txt', '.json', '.csv'), 'Not a valid file'
-            assert type(label) == str, 'Label not a string'
+            assert filename.lower().endswith('.txt'), 'Not a valid txt file'
+            assert label != None and type(label) == str, 'Label not a string'
             assert type(parser) == str, 'Parser not defined'
+            assert os.stat(filename).st_size != 0, 'Inputted file is empty'
+
 
         except AssertionError as ae:
-            print("Parser error: ", str(ae))
+            print("Loading text error: ", str(ae))
+
             return None
 
         else:
@@ -74,27 +59,13 @@ class NLPError(Exception):
         finally:
             print('CLOSING CONNECTION')
 
-    def get_wordcount(self, word_list, k):
+    def get_wordcount(self, word_list=None, k=None):
 
         try:
             assert type(word_list) == list, 'Not a list'
-            assert type(k) == int, 'k not an integer'
-
-        except AssertionError as ae:
-            print("Parser error: ", str(ae))
-            return None
-
-        else:
-            print('Success')
-
-        finally:
-            print('CLOSING CONNECTION')
-
-    def wordcount_sankey(self, word_list, k):
-
-        try:
-            assert type(word_list) == list, 'Not a list'
-            assert type(k) == int, 'k not an integer'
+            assert word_list != None and len(word_list) != 0, 'List is empty'
+            assert k!=None and type(k) == int, 'k not an integer'
+            assert k >=1, 'k is too small'
 
         except AssertionError as ae:
             print("Parser error: ", str(ae))
