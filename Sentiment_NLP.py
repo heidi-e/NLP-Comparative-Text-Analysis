@@ -221,7 +221,7 @@ class SentimentNLP:
         # Create a word cloud for each subplot
         for i in range(len(text_lst)):
             ax = axs[i]
-            wc = WordCloud(background_color="white").generate(text_lst[i])
+            wc = WordCloud(collocations=False, background_color="white").generate(text_lst[i])
             ax.imshow(wc, interpolation='bilinear')
             ax.set_title(filename_lst[i])
             ax.set_axis_off()
