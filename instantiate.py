@@ -12,11 +12,12 @@ object.load_text('9_4.txt')
 
 #pp.pprint(object.data)
 
-#object.wordcount_sankey(word_list=["br", "darling", "ronald", "stage", "film", "actor"])
+object.wordcount_sankey(word_list=["br", "darling", "ronald", "stage", "film", "actor"])
 
 #object.wordcount_sankey()
 
-object.fourth_viz()
+#object.third_viz()
+#object.fourth_viz()
 
 #object.visualize(wordcount_sankey)
 

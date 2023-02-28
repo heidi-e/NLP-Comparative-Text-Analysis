@@ -167,8 +167,10 @@ class SentimentNLP:
         for filename in wordcount_dict:
             for key, value in wordcount_dict[filename].items():
                 for i in range(value):
-                    new_row = {'text': filename, 'word': key}
-                    df_sankey = df_sankey.append(new_row, ignore_index=True)
+                    new_row = pd.Series({'text': filename, 'word': key})
+                    df_sankey = pd.concat([df_sankey, new_row.to_frame().T], ignore_index=True)
+
+                    #df_sankey.append(new_row, ignore_index=True)
 
         # call sankey library
         make_sankey(df_sankey, df_sankey.columns, 0)
