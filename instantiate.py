@@ -14,12 +14,14 @@ object.load_text('Text_Files/nirvana.txt')
 object.load_text('Text_Files/rihanna.txt')
 object.load_text('Text_Files/amy-winehouse.txt')
 
+# create sankey diagram
+#object.wordcount_sankey()
 
-object.wordcount_sankey()
-
+# create word cloud visualization
 object.second_viz()
 
-object.third_viz()
+# create multiple bar plot
+#object.third_viz()
 
 
 
