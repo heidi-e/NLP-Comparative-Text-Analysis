@@ -40,6 +40,9 @@ class NLPError(Exception):
         try:
             assert type(content) == str, 'Expecting string'
 
+        except:
+            pass
+
     def _save_results(self, label, results):
 
         try:

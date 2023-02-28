@@ -15,7 +15,9 @@ object.load_text('9_4.txt')
 #object.wordcount_sankey(word_list=["br", "darling", "ronald", "stage", "film", "actor"])
 
 #object.wordcount_sankey()
-
+object.wordcount_sankey()
+object.second_viz()
+object.third_viz()
 object.fourth_viz()
 
 #object.visualize(wordcount_sankey)
