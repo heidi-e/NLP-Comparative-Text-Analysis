@@ -16,6 +16,7 @@ class NLPError:
         :return results (dict): a dict of statistics for each text file, the state variable
         """
 
+
         try:
 
             assert type(filename) == str, 'Expecting a file name'
@@ -38,13 +39,17 @@ class NLPError:
             print('CLOSING CONNECTION')
 
 
-    def load_text(self, filename, label=None, parser=None):
+    def load_text(self, filename, label = None, parser = None):
+
+
+        if label is None:
+            label = filename
+
 
         try:
             assert type(filename) == str, 'Filename not a string'
             assert filename.lower().endswith('.txt'), 'Not a valid txt file'
             assert label != None and type(label) == str, 'Label not a string'
-            assert type(parser) == str, 'Parser not defined'
             assert os.stat(filename).st_size != 0, 'Inputted file is empty'
 
 
@@ -56,14 +61,21 @@ class NLPError:
         else:
             print('Success')
 
+
+
         finally:
             print('CLOSING CONNECTION')
 
+
+
     def get_wordcount(self, word_list=None, k=None):
 
+
         try:
-            assert type(word_list) == list, 'Not a list'
-            assert word_list != None and len(word_list) != 0, 'List is empty'
+            if word_list != None:
+                assert type(word_list) == list, 'Not a list'
+            if word_list != None:
+                assert len(word_list) != 0, 'List is empty'
             assert k!=None and type(k) == int, 'k not an integer'
             assert k >=1, 'k is too small'
 

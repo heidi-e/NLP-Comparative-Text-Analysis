@@ -30,7 +30,7 @@ class SentimentNLP:
         # manage data about the different texts that
         # we register with the framework
         self.data = defaultdict(dict)
-        self.Exception = NLPError
+        self.Exception = NLPError()
 
     def _default_parser(self, filename):
         """
