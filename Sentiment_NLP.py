@@ -1,4 +1,5 @@
 """
+Kelsey Nihezagirwe, Conor Doyle, Heidi Eren, Olivia Mintz
 A reuseable core framework for NLP Comparative Text Analysis
 DS3500 HW3
 2/27/23
@@ -12,7 +13,6 @@ from nltk.corpus import stopwords
 from nltk.stem import WordNetLemmatizer
 from sankey_test import make_sankey
 from nltk.sentiment import SentimentIntensityAnalyzer
-
 from exception_class import NLPError
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud
@@ -38,7 +38,7 @@ class SentimentNLP:
         :param filename (str): name of file
         :return results (dict): a dict of statistics for each text file, the state variable
         """
-
+        # call the exceptions class which checks for exceptions in this function
         self.Exception._default_parser(filename)
 
 
@@ -69,12 +69,18 @@ class SentimentNLP:
         :param content (str): the content of the file
         :return: text_data (str): cleaned version of content
         """
-        # this takes out punctuation, lower cases everything, combined similar words, takes out stop words/ non-words.
+        # use NLTK for processing and cleaning
         text_data = content
+
+        # take out punctuation and lowercase everything
         text_data = re.sub('[^a-zA-Z]', ' ', text_data)
         text_data = text_data.lower()
         text_data = text_data.split()
+
+        # combine similar words
         wl = WordNetLemmatizer()
+
+        # tale out non-english words and stop words
         text_data = [wl.lemmatize(word) for word in text_data if not word in set(stopwords.words('english'))]
         text_data = ' '.join(text_data)
 
@@ -87,9 +93,12 @@ class SentimentNLP:
         content (str): the contents of the file
         return: counts (dict): word count freq dictionary
         """
+
+        # split the words
         counts = dict()
         words = content.split()
 
+        # count the occurences of each word
         for word in words:
             if word in counts:
                 counts[word] += 1
@@ -103,6 +112,7 @@ class SentimentNLP:
         label (str): unique label for a text file that we parsed
         results: the data extracted from the file as a dictionary attribute-->raw data
         """
+        # save the data in results to the object's dictionary, which holds all of the data for each file
         for k, v in results.items():
             self.data[k][label] = v
 
@@ -113,15 +123,19 @@ class SentimentNLP:
         parser (function): custom domain-specific parser to handle text file
          """
 
+        # call the exceptions class which checks for exceptions in this function
         self.Exception.load_text(filename, label, parser)
 
-        if parser is None:  # do default parsing of standard .txt file
+
+        if parser is None:
+            # do default parsing of standard .txt file
             results = self._default_parser(filename)
 
         else:
+            # get the results using the user's parser
             results = parser(filename)
 
-        # also do the processing steps before saving the file
+        # assign label to the filename if it was not given
         if label is None:
             label = filename
 
@@ -136,6 +150,7 @@ class SentimentNLP:
         :param k (int): the k most common words across the files
         """
 
+        # call the exceptions class which checks for exceptions in this function
         self.Exception.get_wordcount(word_list, k)
 
         # for default parameters
@@ -159,6 +174,7 @@ class SentimentNLP:
 
                 wordcount_dict[filename] = temp_dict
 
+        # save the new wordcounts to the object's data dictionary
         self.data["wordcount"] = wordcount_dict
 
 
@@ -181,8 +197,6 @@ class SentimentNLP:
                     new_row = pd.Series({'text': filename, 'word': key})
                     df_sankey = pd.concat([df_sankey, new_row.to_frame().T], ignore_index=True)
 
-                    #df_sankey.append(new_row, ignore_index=True)
-
         # call sankey library
         make_sankey(df_sankey, df_sankey.columns, 0)
 
@@ -191,6 +205,7 @@ class SentimentNLP:
         Create single visualization of a word cloud with subplots for each text file
         """
 
+        # get the raw_text data to use for the plot
         text_content = self.data['raw_text']
         filename_lst = []
         text_lst = []
@@ -216,28 +231,13 @@ class SentimentNLP:
         plt.show()
 
 
+
     def third_viz(self):
-        """
-        Create bar graph that overlays compound (sentiment) score for each text file
-        """
-
-        filenames = self.data["sentiment"].keys()
-        compounds = []
-        for filename in self.data["sentiment"]:
-            compounds.append(self.data["sentiment"][filename]["compound"])
-
-        # make bar graph
-        plt.bar(filenames, compounds)
-        plt.title('Bar graph of sentiment compound score for each file')
-        plt.xlabel('Text file name')
-        plt.ylabel('Compound score for each file')
-        plt.show()
-
-    def fourth_viz(self):
         """
         Create a multiple bar plot that compares positive vs negative sentiment scores for each file
         """
 
+        # get the sentiment data to be used for the plot
         filenames = self.data["sentiment"].keys()
         pos_lst = []
         neg_lst = []
@@ -256,9 +256,9 @@ class SentimentNLP:
         br2 = [x + barWidth for x in br1]
 
         # Make the plot
-        plt.bar(br1, pos_lst, color='r', width=barWidth,
+        plt.bar(br1, pos_lst, color='b', width=barWidth,
                 edgecolor='grey', label='positive')
-        plt.bar(br2, neg_lst, color='b', width=barWidth,
+        plt.bar(br2, neg_lst, color='r', width=barWidth,
                 edgecolor='grey', label='negative')
 
         # Add Xticks

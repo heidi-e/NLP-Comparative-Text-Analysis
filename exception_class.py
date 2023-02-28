@@ -1,4 +1,6 @@
-
+"""
+This exception class, NLPError, is reusable to test exceptions for different parsers
+"""
 from collections import defaultdict
 import os
 from sankey_test import make_sankey
